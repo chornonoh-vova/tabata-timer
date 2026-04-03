@@ -54,6 +54,12 @@ function nextPhase(state: State): State {
         timeLeft: state.config.work,
       }
     case "work": {
+      if (state.round === state.config.rounds) {
+        return state.config.cooldown > 0
+          ? { ...state, phase: "cooldown", timeLeft: state.config.cooldown }
+          : { ...state, phase: "done", isRunning: false }
+      }
+
       return {
         ...state,
         phase: "rest",
@@ -61,12 +67,6 @@ function nextPhase(state: State): State {
       }
     }
     case "rest":
-      if (state.round === state.config.rounds) {
-        return state.config.cooldown > 0
-          ? { ...state, phase: "cooldown", timeLeft: state.config.cooldown }
-          : { ...state, phase: "done", isRunning: false }
-      }
-
       return {
         ...state,
         phase: "work",
@@ -120,7 +120,8 @@ export function getElapsedTime(state: State): number {
   if (phase === "done") {
     return (
       config.prepare +
-      (config.work + config.rest) * config.rounds +
+      (config.work + config.rest) * (config.rounds - 1) +
+      config.work +
       config.cooldown
     )
   }
@@ -139,11 +140,6 @@ export function getElapsedTime(state: State): number {
   // 3. Phases inside current round
   if (phase === "rest" || phase === "cooldown") {
     elapsed += config.work
-  }
-
-  // 4. Cooldown reached only after all rounds
-  if (phase === "cooldown") {
-    elapsed += config.rest
   }
 
   // 5. Progress inside current phase

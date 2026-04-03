@@ -33,7 +33,8 @@ export function TabataScreen({ onBack }: { onBack: () => void }) {
 
   const timeTotal =
     state.config.prepare +
-    (state.config.work + state.config.rest) * state.config.rounds +
+    (state.config.work + state.config.rest) * (state.config.rounds - 1) +
+    state.config.work +
     state.config.cooldown
 
   const timeElapsed = getElapsedTime(state)
@@ -62,13 +63,13 @@ export function TabataScreen({ onBack }: { onBack: () => void }) {
           ) : (
             <p className="my-auto self-center text-5xl">
               Next: {state.phase === "prepare" && "Work"}
-              {state.phase === "work" && "Rest"}
-              {state.phase === "rest" &&
+              {state.phase === "work" &&
                 state.round < state.config.rounds &&
-                "Work"}
-              {state.phase === "rest" &&
+                "Rest"}
+              {state.phase === "work" &&
                 state.round === state.config.rounds &&
                 (state.config.cooldown ? "Cooldown" : "Done")}
+              {state.phase === "rest" && "Work"}
             </p>
           )}
           {state.isRunning ? (
