@@ -28,7 +28,9 @@ export function TabataScreen({ onBack }: { onBack: () => void }) {
   const { config } = useConfig()
   const { state, pause, play } = useTabataTimer(config)
 
-  useWakeLock(state)
+  const isActive = state.isRunning && state.phase !== "done"
+
+  useWakeLock(isActive)
   useFeedback(state)
 
   const timeTotal =

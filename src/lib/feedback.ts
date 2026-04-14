@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import type { State } from "./tabata-timer"
 
-const tickAudio = new Audio("/sounds/tick.mp3")
-const phaseAudio = new Audio("/sounds/phase.mp3")
+const tickAudio = new Audio("/tabata-timer/sounds/tick.mp3")
+const phaseAudio = new Audio("/tabata-timer/sounds/phase.mp3")
 
 function playTick() {
   tickAudio.currentTime = 0

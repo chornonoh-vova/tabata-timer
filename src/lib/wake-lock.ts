@@ -1,9 +1,6 @@
 import { useEffect } from "react"
-import type { State } from "./tabata-timer"
 
-export function useWakeLock(state: State) {
-  const isActive = state.isRunning && state.phase !== "done"
-
+export function useWakeLock(isActive: boolean) {
   useEffect(() => {
     let lock: WakeLockSentinel | null = null
 
